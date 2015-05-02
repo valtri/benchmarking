@@ -63,6 +63,14 @@ for my $isuite (0..$#suites) {
 	}
 	close FH;
 
+	if (-x "$suite/init.sh") {
+		`(date --iso-8601=ns; ($suite/init.sh || echo FAILED return code \"\$?\"); date --iso-8601=ns) | tee $output$suite-0-init.log`;
+		`grep -vq FAILED $output$suite-0-init.log`;
+		if ($? != 0) {
+			die "Failed to initialize suite $suite!";
+		}
+	}
+
 	$suiteElapsed = 0;
 	open FH, '>', "${output}${suite}.csv" or die;
 	print FH "name,status,time\n";
@@ -70,7 +78,7 @@ for my $isuite (0..$#suites) {
 		my ($cmd, $startSec, $startUsec, $endSec, $endUsec, $elapsed, $status);
 
 		$command = $commands[$i];
-		$cmd = "(date --iso-8601=ns; ($command->{cmd} || echo FAILED return code \"\$?\"); date --iso-8601=ns) | tee $output$suite-$command->{name}.log";
+		$cmd = "(date --iso-8601=ns; ($command->{cmd} || echo FAILED return code \"\$?\"); date --iso-8601=ns) | tee $output$suite-$i-$command->{name}.log";
 
 		print "  $command->{name}:";
 		#print "  $cmd";
@@ -96,4 +104,18 @@ for my $isuite (0..$#suites) {
 	close FH;
 
 	`echo ${suite},${suiteElapsed} >> ${output}benchmark.csv`;
+}
+
+if (!$opts{n}) {
+	for my $isuite (0..$#suites) {
+		my $suite = $suites[$isuite];
+
+		if (-x "$suite/done.sh") {
+			`(date --iso-8601=ns; ($suite/done.sh || echo FAILED return code \"\$?\"); date --iso-8601=ns) | tee $output$suite-0-done.log`;
+			`grep -vq FAILED $output$suite-0-done.log`;
+			if ($? != 0) {
+				print "Failed to clean up suite $suite!\n";
+			}
+		}
+	}
 }
