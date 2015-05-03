@@ -1,6 +1,7 @@
 #! /usr/bin/perl
 use warnings;
 use strict;
+use File::Copy "move";
 use Getopt::Std;
 use Time::HiRes qw(gettimeofday);
 
@@ -116,6 +117,15 @@ if (!$opts{n}) {
 			if ($? != 0) {
 				print "Failed to clean up suite $suite!\n";
 			}
+		}
+	}
+
+	if (-f 'TestDFSIO_results.log') {
+		if (-f "${output}TestDFSIO_results.log") {
+			`cat TestDFSIO_results.log >> ${output}TestDFSIO_results.log`;
+			unlink 'TestDFSIO_results.log';
+		} else {
+			move('TestDFSIO_results.log', $output);
 		}
 	}
 }
