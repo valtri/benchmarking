@@ -5,7 +5,8 @@ This is a generic framework to launch benchmarks and measure the running time. A
 Commands:
 
 * *run.pl*: main launcher script
-* *averager.pl*: read all \*.csv files in all specified directories and produce sumary \*.csv files with average values
+* *averager.pl*: read all \*.csv files in all specified directories and produce summary \*.csv files with average values
+* *dfsio-averager.pl*: read stdio with DFSIO logs and produce summary csv output with average values
 
 # Benchmark subdirectories
 
