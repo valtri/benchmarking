@@ -1,5 +1,5 @@
-#! /bin/sh
+#! /bin/sh -e
 
-JAR='/usr/lib/hadoop-0.20-mapreduce/hadoop-test.jar'
+test -f ./settings.sh && . ./settings.sh
 
-hadoop jar "${JAR}" TestDFSIO -D test.build.data=./dfsio -clean 2>&1
+hadoop jar "${JAR_DFSIO}" TestDFSIO -D test.build.data=./dfsio -clean 2>&1

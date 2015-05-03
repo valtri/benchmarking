@@ -1,9 +1,9 @@
 #! /bin/sh -e
 
-N=10
+test -f ./settings.sh && . ./settings.sh
 
 s='gendata'
-for i in `seq 1 ${N}`; do
+for i in `seq 1 ${N_TERASORT}`; do
 	s="${s} sorted-${i} reportdata-${i}"
 done
 

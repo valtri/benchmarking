@@ -1,9 +1,8 @@
 #! /bin/sh
 
-JAR='/usr/lib/hadoop-mapreduce/hadoop-mapreduce-examples.jar'
-N=10
+test -f ./settings.sh && . ./settings.sh
 
-for i in `seq 1 ${N}`; do
+for i in `seq 1 ${N_PI}`; do
 	echo '# pi'
-	echo "hadoop jar '${JAR}' pi 200 10000 2>&1"
+	echo "hadoop jar '${JAR_MR}' pi 200 10000 2>&1"
 done

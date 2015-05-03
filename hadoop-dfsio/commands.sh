@@ -1,10 +1,10 @@
 #! /bin/sh
 
-JAR='/usr/lib/hadoop-0.20-mapreduce/hadoop-test.jar'
+test -f ./settings.sh && . ./settings.sh
 
 cat <<EOF
 # dfsio-write
-hadoop jar '${JAR}' TestDFSIO -D test.build.data=./dfsio -write -nrFiles 10 -fileSize 2000 2>&1
+hadoop jar '${JAR_DFSIO}' TestDFSIO -D test.build.data=./dfsio -write -nrFiles ${DFSIO_NUMFILES} -fileSize ${DFSIO_SIZE} 2>&1
 # dfsio-read
-hadoop jar '${JAR}' TestDFSIO -D test.build.data=./dfsio -read -nrFiles 10 -fileSize 2000 2>&1
+hadoop jar '${JAR_DFSIO}' TestDFSIO -D test.build.data=./dfsio -read -nrFiles ${DFSIO_NUMFILES} -fileSize ${DFSIO_SIZE} 2>&1
 EOF

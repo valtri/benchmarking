@@ -1,9 +1,8 @@
 #! /bin/sh
 
-JAR='/usr/lib/hadoop-mapreduce/hadoop-mapreduce-examples.jar'
-N=2
+test -f ./settings.sh && . ./settings.sh
 
-for i in `seq 1 ${N}`; do
+for i in `seq 1 ${N_RANDOMWRITER}`; do
 	echo "# randomwriter"
-	echo "hadoop jar '${JAR}' randomwriter randomwriter-${i} 2>&1"
+	echo "hadoop jar '${JAR_MR}' randomwriter randomwriter-${i} 2>&1"
 done

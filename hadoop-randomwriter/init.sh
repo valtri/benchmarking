@@ -1,9 +1,9 @@
 #! /bin/sh -e
 
-N=2
+test -f ./settings.sh && . ./settings.sh
 
 s=''
-for i in `seq 1 ${N}`; do
+for i in `seq 1 ${N_RANDOMWRITER}`; do
 	s="${s} randomwriter-${i}"
 done
 
