@@ -3,7 +3,7 @@
 test -f ./settings.sh && . ./settings.sh
 
 s=''
-for i in `seq 1 ${N_RANDOMWRITER}`; do
+for i in `seq 1 ${RANDOMWRITER_N}`; do
 	s="${s} randomwriter-${i}"
 done
 

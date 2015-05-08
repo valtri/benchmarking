@@ -1,16 +1,14 @@
-# repeat of basic benchmarks
-N_PI=10
-N_RANDOMWRITER=2
-N_TERASORT=10
+PI_N=10
+PI_TASKS=300
+PI_COUNT=40000
 
-# dfsio
+RANDOMWRITER_N=5
+
 DFSIO_NUMFILES=10
-DFSIO_SIZE=2000
+DFSIO_SIZE=10000
 
-# Hortonworks Hive Benchmarks
-TESTBENCH_DIR="/scratch/`id -nu`/hive-testbench"
-SCALE_TPCDS=500
-SCALE_TPCH=100
+TERASORT_N=10
+TERASORT_SIZE=1000000
 
 # < 2.6.0
 #JAR_DFSIO='/usr/lib/hadoop-0.20-mapreduce/hadoop-test.jar'

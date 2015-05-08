@@ -2,35 +2,9 @@
 # Generic benchmark launcher.
 #
 
-#
-# 1) download hive-testbench
-#
-#   git checkout https://github.com/valtri/hive-testbench
-#   vim hive-*/commands.sh
-#
-# 2) initialize benchmarks
-#
-#  a) hive-tpch, hive-tpcds (see hive-testbench README)
-#
-#   pushd hive-testbench
-#
-#   ./tpcds-build.sh
-#   ./tpcds-setup.sh 500
-#
-#   ./tpch-build.sh
-#   ./tpch-setup.sh 100
-#
-#   popd
-#
-
 # repeating:
-for i in `seq 1 5`; do
-  rm -rf result${i}
-done
-
-for i in `seq 1 5`; do
-  ./run.pl -o result${i}
-done
+for i in `seq 1 5`; do rm -rf result${i}; done
+for i in `seq 1 5`; do echo ${i}; ./run.pl -o result${i}; done
 
 # single suite:
 rm -rf results

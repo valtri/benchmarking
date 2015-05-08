@@ -2,7 +2,7 @@
 
 test -f ./settings.sh && . ./settings.sh
 
-for i in `seq 1 ${N_PI}`; do
+for i in `seq 1 ${PI_N}`; do
 	echo '# pi'
-	echo "hadoop jar '${JAR_MR}' pi 200 10000 2>&1"
+	echo "hadoop jar '${JAR_MR}' pi ${PI_TASKS} ${PI_COUNT} 2>&1"
 done
