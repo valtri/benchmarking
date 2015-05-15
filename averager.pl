@@ -5,7 +5,7 @@ use File::Basename;
 
 my $prefix = 'avg-';
 my $dir;
-my (%csv_headers, %csv_data, %csv_counts);
+my (%csv_headers, %csv_values);
 my ($NAME, $TIME);
 
 if ($#ARGV < 0) {
@@ -43,13 +43,11 @@ while ($ARGV[0]) {
 		while ($_ = <FH>) {
 			chomp;
 			my @a = split /,/;
-			if (defined $csv_data{$filename}{$a[$NAME]}) {
-				$csv_data{$filename}{$a[$NAME]} += $a[$TIME];
-				$csv_counts{$filename}{$a[$NAME]}++;
-			} else {
-				$csv_data{$filename}{$a[$NAME]} = $a[$TIME];
-				$csv_counts{$filename}{$a[$NAME]} = 1;
+			if (not defined $csv_values{$filename}{$a[$NAME]}) {
+				$csv_values{$filename}{$a[$NAME]} = [];
 			}
+#print STDERR "$filename,$a[$NAME],$a[$TIME]\n";
+			push @{$csv_values{$filename}{$a[$NAME]}}, $a[$TIME];
 		}
 		close FH;
 	}
@@ -58,16 +56,37 @@ while ($ARGV[0]) {
 }
 
 
-for my $filename (keys %csv_data) {
-	my %data = %{$csv_data{$filename}};
-	my %counts = %{$csv_counts{$filename}};
+for my $filename (keys %csv_values) {
+	my %data = %{$csv_values{$filename}};
 
 	open FH, '>', "${prefix}${filename}.csv" or die;
 	print "$filename\n";
-	print FH "name,count,elapsed\n";
+	print FH "name,count,elapsed,deviation\n";
+#print STDERR "file: $filename\n";
 	for my $testname (keys %data) {
-		my $value = $data{$testname} / $counts{$testname};
-		print FH "$testname,$counts{$testname},$value\n";
+		my ($average, $count, $deviation);
+
+		$average = 0;
+		$count = $#{$data{$testname}} + 1;
+		$deviation = 0;
+#print STDERR "file: $filename, test: $testname, count: $count\n";
+		for my $i (0..$count - 1) {
+			$average += $data{$testname}[$i];
+		}
+		if ($count) {
+			$average /= $count;
+		} else {
+			$average = '';
+		}
+		if ($count > 1) {
+			for my $i (0..$count - 1) {
+				$deviation += ($average - $data{$testname}[$i]) * ($average - $data{$testname}[$i]);
+			}
+			$deviation = sqrt($deviation / ( $count * ($count - 1)));
+		} else {
+			$deviation = '';
+		}
+		print FH "$testname,$count,$average,$deviation\n";
 	}
 	close FH;
 }
