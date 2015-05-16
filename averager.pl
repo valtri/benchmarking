@@ -56,6 +56,8 @@ while ($ARGV[0]) {
 }
 
 
+open FH_ALL, '>', "${prefix}all.csv" or die;
+print FH_ALL "name,count,elapsed,deviation\n";
 for my $filename (keys %csv_values) {
 	my %data = %{$csv_values{$filename}};
 
@@ -87,6 +89,10 @@ for my $filename (keys %csv_values) {
 			$deviation = '';
 		}
 		print FH "$testname,$count,$average,$deviation\n";
+		if (not $filename =~ /^benchmark$/) {
+			print FH_ALL "$testname,$count,$average,$deviation\n";
+		}
 	}
 	close FH;
 }
+close FH_ALL;
