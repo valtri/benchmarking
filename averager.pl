@@ -84,7 +84,7 @@ for my $filename (keys %csv_values) {
 			for my $i (0..$count - 1) {
 				$deviation += ($average - $data{$testname}[$i]) * ($average - $data{$testname}[$i]);
 			}
-			$deviation = sqrt($deviation / ( $count * ($count - 1)));
+			$deviation = sqrt($deviation / ($count - 1));
 		} else {
 			$deviation = '';
 		}
