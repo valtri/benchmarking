@@ -47,7 +47,13 @@ while ($ARGV[0]) {
 				$csv_values{$filename}{$a[$NAME]} = [];
 			}
 #print STDERR "$filename,$a[$NAME],$a[$TIME]\n";
+
 			push @{$csv_values{$filename}{$a[$NAME]}}, $a[$TIME];
+
+			# summaries over all hosts for netcat benchmarks
+			if ($filename eq 'netcat') {
+				push @{$csv_values{$filename}{'netcat'}}, $a[$TIME];
+			}
 		}
 		close FH;
 	}
