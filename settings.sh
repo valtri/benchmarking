@@ -26,5 +26,5 @@ JAR_MR='/usr/lib/hadoop-mapreduce/hadoop-mapreduce-examples.jar'
 #NC_DOMAIN='.example.com'
 NC_N=5
 NC_PORT=10000
-NC_SIZE_MB=4096
+NC_SIZE_MB=40960
 NC_USER='root'
