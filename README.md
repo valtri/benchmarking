@@ -44,6 +44,8 @@ Send USR1 signal to *dd* on the target host to write current progress to the log
 
     killall dd -USR1
 
+Sleep for 1 second is added to each run.
+
 ### Parameters
 
 ####NC\_HOSTS
