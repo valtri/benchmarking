@@ -64,14 +64,14 @@ while ($ARGV[0]) {
 
 open FH_ALL, '>', "${prefix}all.csv" or die;
 print FH_ALL "name,count,elapsed,deviation\n";
-for my $filename (keys %csv_values) {
+for my $filename (sort keys %csv_values) {
 	my %data = %{$csv_values{$filename}};
 
 	open FH, '>', "${prefix}${filename}.csv" or die;
 	print "$filename\n";
 	print FH "name,count,elapsed,deviation\n";
 #print STDERR "file: $filename\n";
-	for my $testname (keys %data) {
+	for my $testname (sort keys %data) {
 		my ($average, $count, $deviation);
 
 		$average = 0;
