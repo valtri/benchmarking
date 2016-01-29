@@ -76,26 +76,31 @@ for my $isuite (0..$#suites) {
 	open FH, '>', "${output}${suite}.csv" or die;
 	print FH "name,status,time\n";
 	for my $i (1..$#commands) {
-		my ($cmd, $startSec, $startUsec, $endSec, $endUsec, $elapsed, $status);
+		my ($cmd, $log, $startSec, $startUsec, $endSec, $endUsec, $elapsed, $status);
 
 		$command = $commands[$i];
-		$cmd = "(date --iso-8601=ns; ($command->{cmd} || echo FAILED return code \"\$?\"); date --iso-8601=ns) | tee $output$suite-$i-$command->{name}.log";
+		$log = "$output$suite-$i-$command->{name}.log";
+		$cmd = "(date --iso-8601=ns; ($command->{cmd} || echo FAILED return code \"\$?\"); date --iso-8601=ns) | tee $log";
 
 		print "  $command->{name}:";
 		#print "  $cmd";
 		($startSec, $startUsec) = gettimeofday();
 		$status = 'SUCCESS';
-		my @jobOutput = `$cmd`;
+		`$cmd`;
 		if ($? != 0) {
                   $status = 'FATAL';
                 }
 		($endSec, $endUsec) = gettimeofday();
 
-		foreach my $line ( @jobOutput ) {
-			if ($line =~ /FAILED/) {
+		open LH, '<', $log or die;
+		while (<LH>) {
+			chomp;
+			if ($_ =~ /FAILED/) {
 				$status = 'FAILED';
 			}
 		}
+		close LH;
+
 		$elapsed = ($endSec - $startSec) + ($endUsec - $startUsec) / 1000000.0;
 		print "  => $elapsed s, status $status\n";
 
