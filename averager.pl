@@ -3,7 +3,7 @@ use warnings;
 use strict;
 use File::Basename;
 
-my $prefix = 'avg-';
+my $prefix = 'results';
 my $dir;
 my (%csv_headers, %csv_values);
 my ($NAME, $TIME);
@@ -62,15 +62,13 @@ while ($ARGV[0]) {
 }
 
 
-open FH_ALL, '>', "${prefix}all.csv" or die;
-print FH_ALL "name,count,elapsed,deviation\n";
+open FH_ALL, '>', "${prefix}.csv" or die;
+print FH_ALL "suite,name,count,elapsed,deviation\n";
 for my $filename (sort keys %csv_values) {
 	my %data = %{$csv_values{$filename}};
 
-	open FH, '>', "${prefix}${filename}.csv" or die;
-	print "$filename\n";
-	print FH "name,count,elapsed,deviation\n";
-#print STDERR "file: $filename\n";
+	#print "$filename\n";
+#print STDERR "suite: $filename\n";
 	for my $testname (sort keys %data) {
 		my ($average, $count, $deviation);
 
@@ -94,11 +92,9 @@ for my $filename (sort keys %csv_values) {
 		} else {
 			$deviation = '';
 		}
-		print FH "$testname,$count,$average,$deviation\n";
 		if (not $filename =~ /^benchmark$/) {
-			print FH_ALL "$testname,$count,$average,$deviation\n";
+			print FH_ALL "$filename,$testname,$count,$average,$deviation\n";
 		}
 	}
-	close FH;
 }
 close FH_ALL;
