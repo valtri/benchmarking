@@ -6,7 +6,7 @@ use File::Basename;
 my $prefix = 'results';
 my $dir;
 my (%csv_headers, %csv_values);
-my ($NAME, $TIME);
+my ($NAME, $TIME, $STATUS);
 
 if ($#ARGV < 0) {
 	print "Usage: $0 DIR1 DIR2 ...\n";
@@ -32,8 +32,10 @@ while ($ARGV[0]) {
 		$NAME = 0;
 		if ($filename eq 'benchmark') {
 			$TIME = 1;
+			$STATUS = -1;
 		} else {
 			$TIME = 2;
+			$STATUS = 1;
 		}
 
 		open FH, '<', "$file" or die;
@@ -48,7 +50,11 @@ while ($ARGV[0]) {
 			}
 #print STDERR "$filename,$a[$NAME],$a[$TIME]\n";
 
-			push @{$csv_values{$filename}{$a[$NAME]}}, $a[$TIME];
+			if ($STATUS != -1) {
+				if ($a[$STATUS] eq 'SUCCESS') {
+					push @{$csv_values{$filename}{$a[$NAME]}}, $a[$TIME];
+				}
+			}
 
 			# summaries over all hosts for netcat benchmarks
 			if ($filename eq 'netcat') {
